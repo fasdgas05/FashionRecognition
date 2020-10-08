@@ -1,0 +1,8 @@
+python D:\notebook\model\research\object_detection\model_main_tf2.py --pipeline_config_path=D:\notebook\cabstone\model\pipeline.config --model_dir=D:\notebook\cabstone\model --alsologtostderr
+
+
+python D:\notebook\model\research\object_detection/model_main_tf2.py \
+    --pipeline_config_path=D:\notebook\cabstone\model\pipeline.config \
+    --model_dir=D:\notebook\cabstone\model \
+    --checkpoint_dir=D:\notebook\cabstone\model\checkpoint \
+    --alsologtostderr
