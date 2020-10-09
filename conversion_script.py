@@ -20,7 +20,7 @@ def create_tf_example(example, LABEL_DICT):
   xmaxs = [example['x_2'] / width] # List of normalized right x coordinates in bounding box
              # (1 per box)
   ymins = [example['y_1'] / height] # List of normalized top y coordinates in bounding box (1 per box)
-  ymaxs = [example['y_1'] / height] # List of normalized bottom y coordinates in bounding box
+  ymaxs = [example['y_2'] / height] # List of normalized bottom y coordinates in bounding box
              # (1 per box)
   classes_text = [LABEL_DICT[example['category_type']].encode()] # List of string class name of bounding box (1 per box)
   classes = [example['category_type']] # List of integer class id of bounding box (1 per box)
@@ -96,7 +96,7 @@ def main(_):
 
 
   for example in examples:
-    print(example['image_name'])
+    print(example['image_name'], '->', outfile_name)
     tf_example = create_tf_example(example, label_dict)
     writer.write(tf_example.SerializeToString())
 
