@@ -9,7 +9,7 @@ import sys
 def create_tf_example(example, LABEL_DICT):
   # TODO(user): Populate the following variables from your example.
   f_image = Image.open(example['image_name'])
-  height, width = f_image.size # Image height # Image width
+  width, height = f_image.size # Image height # Image width
   filename = example['image_name'].encode() # Filename of the image. Empty if image is not from file
   encoded_image_data = io.BytesIO() # Encoded image bytes
   f_image.save(encoded_image_data, format='jpeg')
@@ -24,6 +24,8 @@ def create_tf_example(example, LABEL_DICT):
              # (1 per box)
   classes_text = [LABEL_DICT[example['category_type']].encode()] # List of string class name of bounding box (1 per box)
   classes = [example['category_type']] # List of integer class id of bounding box (1 per box)
+
+  assert (xmins[0] >= 0.) and (xmaxs[0] < 1.01) and (ymins[0] >= 0.) and (ymaxs[0] < 1.01), (example, width, height, width, height, xmins, xmaxs, ymins, ymaxs)\
 
   tf_example = tf.train.Example(features=tf.train.Features(feature={
       'image/height': dataset_util.int64_feature(height),
