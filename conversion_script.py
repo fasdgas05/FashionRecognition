@@ -25,7 +25,7 @@ def create_tf_example(example, LABEL_DICT):
   classes_text = [LABEL_DICT[example['category_type']].encode()] # List of string class name of bounding box (1 per box)
   classes = [example['category_type']] # List of integer class id of bounding box (1 per box)
 
-  assert (xmins[0] >= 0.) and (xmaxs[0] < 1.01) and (ymins[0] >= 0.) and (ymaxs[0] < 1.01), (example, width, height, width, height, xmins, xmaxs, ymins, ymaxs)\
+  assert (xmins[0] >= 0.) and (xmaxs[0] < 1.01) and (ymins[0] >= 0.) and (ymaxs[0] < 1.01), (example, width, height, width, height, xmins, xmaxs, ymins, ymaxs)
 
   tf_example = tf.train.Example(features=tf.train.Features(feature={
       'image/height': dataset_util.int64_feature(height),

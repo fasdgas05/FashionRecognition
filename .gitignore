@@ -3,3 +3,4 @@ model/
 _b_model/
 checkpoint/
 model_checkpoint/
+exported_model/
