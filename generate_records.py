@@ -15,15 +15,13 @@ def create_tf_example(example, LABEL_DICT):
   image_format = b'jpeg' # b'jpeg' or b'png'
 
   xmins = [example['x_1'] / width] # List of normalized left x coordinates in bounding box (1 per box)
-  xmaxs = [example['x_2'] / width] # List of normalized right x coordinates in bounding box
-             # (1 per box)
+  xmaxs = [example['x_2'] / width] # List of normalized right x coordinates in bounding box (1 per box)
   ymins = [example['y_1'] / height] # List of normalized top y coordinates in bounding box (1 per box)
-  ymaxs = [example['y_2'] / height] # List of normalized bottom y coordinates in bounding box
-             # (1 per box)
+  ymaxs = [example['y_2'] / height] # List of normalized bottom y coordinates in bounding box (1 per box)
   classes_text = [LABEL_DICT[example['category_type']].encode()] # List of string class name of bounding box (1 per box)
   classes = [example['category_type']] # List of integer class id of bounding box (1 per box)
 
-  assert (xmins[0] >= 0.) and (xmaxs[0] < 1.01) and (ymins[0] >= 0.) and (ymaxs[0] < 1.01), (example, width, height, width, height, xmins, xmaxs, ymins, ymaxs)
+  assert (xmins[0] >= 0.) and (xmaxs[0] < 1.01) and (ymins[0] >= 0.) and (ymaxs[0] < 1.01), (example, width, height, xmins, xmaxs, ymins, ymaxs)
 
   tf_example = tf.train.Example(features=tf.train.Features(feature={
       'image/height': dataset_util.int64_feature(height),
@@ -104,8 +102,12 @@ def main(_):
 		writer = tf.compat.v1.python_io.TFRecordWriter(FLAGS.output_path)
 		for example in data[name]:
 			print(example['image_name'], '->', outfile_name)
-			tf_example = create_tf_example(example, label_dict)
-			writer.write(tf_example.SerializeToString())
+			try:
+				tf_example = create_tf_example(example, label_dict)
+				writer.write(tf_example.SerializeToString())
+			except Exception as e:
+				print(e)
+				continue
 			pass
 		writer.close()
 
