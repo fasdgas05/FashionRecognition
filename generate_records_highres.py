@@ -6,18 +6,24 @@ import sys
 
 def create_tf_example(example, LABEL_DICT):
   # TODO(user): Populate the following variables from your example.
+  o_width, o_height = Image.open(example['image_name'].replace('img_highres','img',1)).size
   f_image = Image.open(example['image_name'])
   width, height = f_image.size # Image height # Image width
+
+  w_p = width / o_width
+  h_p = height / o_height
+
   filename = example['image_name'].encode() # Filename of the image. Empty if image is not from file
   encoded_image_data = io.BytesIO() # Encoded image bytes
+  f_image = f_image.convert('RGB')
   f_image.save(encoded_image_data, format='jpeg')
   encoded_image_data = encoded_image_data.getvalue()
   image_format = b'jpeg' # b'jpeg' or b'png'
 
-  xmins = [example['x_1'] / width] # List of normalized left x coordinates in bounding box (1 per box)
-  xmaxs = [example['x_2'] / width] # List of normalized right x coordinates in bounding box (1 per box)
-  ymins = [example['y_1'] / height] # List of normalized top y coordinates in bounding box (1 per box)
-  ymaxs = [example['y_2'] / height] # List of normalized bottom y coordinates in bounding box (1 per box)
+  xmins = [example['x_1'] * w_p / width] # List of normalized left x coordinates in bounding box (1 per box)
+  xmaxs = [example['x_2'] * w_p / width] # List of normalized right x coordinates in bounding box (1 per box)
+  ymins = [example['y_1'] * h_p / height] # List of normalized top y coordinates in bounding box (1 per box)
+  ymaxs = [example['y_2'] * h_p / height] # List of normalized bottom y coordinates in bounding box (1 per box)
   classes_text = [LABEL_DICT[example['category_type']].encode()] # List of string class name of bounding box (1 per box)
   classes = [example['category_type']] # List of integer class id of bounding box (1 per box)
 
@@ -65,7 +71,7 @@ def main(_):
 
 		if ts[1] in data.keys():
 			data[ts[1]].append({
-				'image_name' :  'D:/notebook/cabstone/data/' + ts[0],
+				'image_name' :  'D:/notebook/cabstone/data/' + ts[0].replace('img','img_highres',1),
 				'x_1' : int(bs[1]),
 				'y_1' : int(bs[2]),
 				'x_2' : int(bs[3]),
@@ -110,6 +116,8 @@ def main(_):
 				writer.write(tf_example.SerializeToString())
 			except Exception as e:
 				print(e)
+				with open('errors.txt','a') as f:
+					print(example['image_name'],'->',type(e),'\n',e)
 				continue
 			pass
 		writer.close()

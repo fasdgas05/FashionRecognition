@@ -2,10 +2,13 @@ train
 
 python D:\notebook\model\research\object_detection\model_main_tf2.py --pipeline_config_path=D:\notebook\cabstone\model\pipeline.config --model_dir=D:\notebook\cabstone\model --alsologtostderr
 
-test
+val
 
 python D:\notebook\model\research\object_detection/model_main_tf2.py --pipeline_config_path=D:\notebook\cabstone\model\pipeline.config --model_dir=D:\notebook\cabstone\model --checkpoint_dir=D:\notebook\cabstone\model\checkpoint --alsologtostderr
 
 export
 
 python exporter_main_v2.py --input_type image_tensor --pipeline_config_path D:\notebook\cabstone\model\pipeline.config --trained_checkpoint_dir D:\notebook\cabstone\model --output_directory D:\notebook\cabstone\exported_model
+
+export tflite
+python export_tflite_ssd_graph.py --pipeline_config_path=D:\notebook\cabstone\model\pipeline.config --trained_checkpoint_prefix=D:\notebook\cabstone\model --output_directory=D:\notebook\cabstone\exported_model_tflite --add_postprocessing_op=true

@@ -53,7 +53,7 @@ if len(sys.argv) == 2:
     outfile_name = 'val_dataset.record'
   elif sys.argv[1] == 'test':
     outfile_name = 'test_dataset.record'
-flags.DEFINE_string('output_path', 'model/label/' + outfile_name, '')
+flags.DEFINE_string('output_path', 'label/' + outfile_name, '')
 FLAGS = flags.FLAGS
 
 def main(_):
@@ -101,8 +101,12 @@ def main(_):
 
   for example in examples:
     print(example['image_name'], '->', outfile_name)
-    tf_example = create_tf_example(example, label_dict)
-    writer.write(tf_example.SerializeToString())
+    try:
+	    tf_example = create_tf_example(example, label_dict)
+	    writer.write(tf_example.SerializeToString())
+	except Exception as e:
+		print(type(e), e)
+		continue
 
   writer.close()
 

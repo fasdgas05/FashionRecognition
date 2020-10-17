@@ -47,12 +47,12 @@ flags = tf.compat.v1.app.flags
 outfile_name = 'train_dataset.record'
 if len(sys.argv) == 2:
   if sys.argv[1] == 'train':
-      outfile_name = 'train_dataset.record'
+      outfile_name = 'train_fine_dataset.record'
   elif sys.argv[1] == 'val':
-    outfile_name = 'val_dataset.record'
+    outfile_name = 'val_fine_dataset.record'
   elif sys.argv[1] == 'test':
-    outfile_name = 'test_dataset.record'
-flags.DEFINE_string('output_path', 'model/label/' + outfile_name, '')
+    outfile_name = 'test_fine_dataset.record'
+flags.DEFINE_string('output_path', 'label/' + outfile_name, '')
 FLAGS = flags.FLAGS
 
 def main(_):

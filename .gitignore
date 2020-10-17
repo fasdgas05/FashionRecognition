@@ -1,6 +1,13 @@
 data/
 model/
+model_fine/
+model_zoo/
+model/
 _b_model/
 checkpoint/
 model_checkpoint/
 exported_model/
+exported_model2/
+exported_model3/
+label/
+EfficientDet/
